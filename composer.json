@@ -2,7 +2,7 @@
   "name": "jasco-b/theme",
   "description": "Laravel multi theme library",
   "type": "library",
-  "version": "dev-master",
+  "version": "stable",
   "keywords": [
     "php",
     "laravel",
