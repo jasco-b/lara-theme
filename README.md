@@ -103,7 +103,7 @@ class HomeController extends Controller {
 >This will use the theme and layout set by default on `.env`
 
 		
-You can add data or define the theme and layout:
+You can set theme:
 
 ~~~php
 ...		
@@ -119,18 +119,15 @@ To check whether a theme exists.
 Theme::has('themename');
 ~~~
 
-Each theme must come supplied with a manifest file `theme.json` stored at the root of the theme, which defines supplemental details about the theme. 
+Each theme must come supplied with a manifest file `config.json` stored at the root of the theme, which defines supplemental details about the theme. 
 ~~~json
 {
     "name": "Default"
 }
 ~~~
 
-The manifest file can store any property that you'd like. These values can be retrieved and even set through a couple helper methods:
-
-~~~php
-// Get all: (array)
-
-Theme::info("name"); 
+## Custom theme boilerplate
+if you want to change boilerplate you can use 
 ~~~
-
+php artisan vendor:publish --provider="JascoB\Theme\Providers\ThemeServiceProvider" --tag="template"
+~~~
