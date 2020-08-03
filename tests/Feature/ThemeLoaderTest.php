@@ -84,9 +84,10 @@ class ThemeLoaderTest extends TestCase
 
     public function testThemeWithWrongNotExsitsDir()
     {
-        $this->expectException(DirectoryNotFoundException::class);
 
         $themes = $this->loader('no-idea')->loadAll();
+
+        $this->assertEmpty($themes);
     }
 
     public function testThemeThemeWIthExsistButWithoutTheme()

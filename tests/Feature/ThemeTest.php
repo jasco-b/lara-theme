@@ -152,9 +152,9 @@ class ThemeTest extends TestCase
 
         $views = $viewFactory->getFinder()->getPaths();
 
-        $this->assertContains($vo->getPath(), $views);
+        $this->assertContains(realpath($vo->getPath()), $views);
 
-        $this->assertEquals($vo->getPath(), current($views));
+        $this->assertEquals(realpath($vo->getPath()), current($views));
     }
 
     public function testAddLocationWhenReplaceViewFalse()

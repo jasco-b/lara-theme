@@ -38,6 +38,10 @@ class ThemeLoader implements IThemeLoader
     {
         $list = [];
 
+        if (!$this->filesystem->exists($this->config->themePath())) {
+            return [];
+        }
+
         $pathList = $this->filesystem->directories($this->config->themePath());
 
 

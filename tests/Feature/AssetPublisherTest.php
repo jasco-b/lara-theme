@@ -44,17 +44,20 @@ class AssetPublisherTest extends TestCase
             unlink($publicDir . DIRECTORY_SEPARATOR . 'theme-link');
         }
 
-        // delete public directories
-        $fileSystem->deleteDirectories($publicDir);
+        if ($fileSystem->exists($publicDir)){
+            // delete public directories
+            $fileSystem->deleteDirectories($publicDir);
+        }
 
         $fileSystem->makeDirectory($publicDir, 0755, true);
     }
 
     public static function createConfig($symlink = true, $assets = 'assets', $publicPath = 'public')
     {
+
         $config = [
             'symlink' => $symlink,
-            'public_asset_path' => realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $publicPath),
+            'public_asset_path' => (__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $publicPath),
             'folders' => [
                 'assets' => $assets,
             ],
@@ -83,6 +86,7 @@ class AssetPublisherTest extends TestCase
     {
         $theme = $this->createThemeVo('link');
         $config = self::createConfig();
+
         $assetPublisher = $this->createAssetPublihser($config);
 
         $assetPublisher->publish($theme);

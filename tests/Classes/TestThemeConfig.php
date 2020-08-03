@@ -20,11 +20,12 @@ class TestThemeConfig implements IThemeConfig
 
     public function __construct($data = [])
     {
+
         $default = [
             'active' => '',
-            'theme_path' => realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'themes'),
+            'theme_path' => (__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'themes'),
             'symlink' => false,
-            'public_asset_path' => realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public') . DIRECTORY_SEPARATOR . 'assets',
+            'public_asset_path' => (__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public'. DIRECTORY_SEPARATOR . 'assets'),
             'config' => [
                 'name' => 'config.json',
             ],
