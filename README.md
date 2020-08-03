@@ -9,6 +9,7 @@ Theme has many features to help you get started with Laravel
 - [Installation](#installation)
 - [Create new theme](#create-new-theme)
 - [Basic usage](#basic-usage)
+- [Custom boilerplate](#custom-theme-boilerplate)
 
 
 
@@ -126,8 +127,48 @@ Each theme must come supplied with a manifest file `config.json` stored at the r
 }
 ~~~
 
+### Custom Helper functions
+@themeInclude is a blade directive for including sup views eg:
+~~~ 
+## insted of 
+@include('someview', ['somedata'=>$var])
+
+## use theme campatible
+@themeInclude('someview', ['somedata'=>$var] )
+~~~
+
+@themeFirst is blade directive instead of @includeFirst
+~~~ 
+## insted of 
+@includeFirst(['someview','view-other'], ['somedata'=>$var] )
+
+## use theme campatible
+@themeFirst(['someview','view-other'], ['somedata'=>$var] )
+~~~
+
+Package will publish assets folder to public folder as indicated on config file theme.php  
+In order to get url for current theme use  theme_uri()
+``` 
+<link href="{{ theme_uri() }}/css/style.css" rel="stylesheet" />
+
+<script src="{{ theme_uri() }}/js/script.js"></script>
+
+<img src="{{ theme_uri() }}/image/img.png" />
+
+```
+
+Please place all your assets to assets folder and  Correctly change config/theme.php file
+
 ## Custom theme boilerplate
 if you want to change boilerplate you can use 
 ~~~
 php artisan vendor:publish --provider="JascoB\Theme\Providers\ThemeServiceProvider" --tag="template"
+~~~
+It will create a fonder on ``resources/views/vendor/theme/template``
+you can make boilerplate there and The package will copy the template from there
+
+## Tests
+In order to run test
+~~~
+php vendor/bin/phpunit tests
 ~~~
