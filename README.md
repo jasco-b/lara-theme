@@ -101,10 +101,14 @@ class HomeController extends Controller {
 	...
 }
 ~~~
->This will use the theme and layout set by default on `.env`
-
+You can use it in your routes as a middleware
+```php
+Route::get('/', function () {
+    //
+})->middleware('theme:yourtheme');
+```
 		
-You can set theme:
+You can set theme manually:
 
 ~~~php
 ...		
