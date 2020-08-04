@@ -150,7 +150,7 @@ class Theme implements ITheme
         return $this->list();
     }
 
-    protected function list()
+    public function list()
     {
         if ($this->list === null) {
             $this->loadThemes();

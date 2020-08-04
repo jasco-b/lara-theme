@@ -54,7 +54,7 @@ class ThemeDeleteCommand extends Command
             return;
         }
 
-        if ($filesystem->deleteDirectory($theme->getPath())) {
+        if (!$filesystem->deleteDirectory($theme->getPath())) {
             $this->error(sprintf('Cannot delete theme %s', $this->argument('name')));
             return;
         }
