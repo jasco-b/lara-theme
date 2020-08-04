@@ -28,3 +28,17 @@ if (!function_exists('theme')) {
         return \JascoB\Theme\Facades\Theme::get();
     }
 }
+
+if (!function_exists('themeAsset')) {
+    function themeAsset($asset)
+    {
+        $theme = \JascoB\Theme\Facades\Theme::get();
+
+        if ($theme) {
+
+            return asset($theme->getUrl() . '/' . $asset);
+        }
+
+        return asset($asset);
+    }
+}
