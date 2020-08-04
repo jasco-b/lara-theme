@@ -85,13 +85,4 @@ return [
         'assets' => 'assets',
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Replace view function
-    |--------------------------------------------------------------------------
-    |
-    | Should we use theme system with view function
-    |
-    */
-    'replaceView' => env('THEME_REPLACE_VIEW', false),
 ];

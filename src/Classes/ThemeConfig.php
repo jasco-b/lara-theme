@@ -49,14 +49,8 @@ class ThemeConfig implements IThemeConfig
         return Config::get('theme.cache');
     }
 
-    public function shouldReplaceView()
-    {
-        return Config::get('theme.replaceView');
-    }
-
     public function publicAssetUri()
     {
         return Config::get('theme.public_asset_uri');
     }
-
 }

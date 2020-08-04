@@ -28,6 +28,8 @@ class ThemeMiddleware
             Theme::set($theme);
         }
 
+
+
         return $next($request);
     }
 }

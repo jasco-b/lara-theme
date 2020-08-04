@@ -24,7 +24,5 @@ interface IThemeConfig
 
     public function shouldCache();
 
-    public function shouldReplaceView();
-
     public function publicAssetUri();
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\ServiceProvider;
 use JascoB\Theme\Classes\AssetPublisher;
 use JascoB\Theme\Classes\ThemeConfig;
 use JascoB\Theme\Classes\ThemeLoader;
+use JascoB\Theme\Classes\ThemeViewFinder;
 use JascoB\Theme\Classes\ThemeViewParser;
 use JascoB\Theme\Commands\ThemeCreateCommand;
 use JascoB\Theme\Commands\ThemeDeleteCommand;
@@ -36,11 +37,16 @@ class ThemeServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../../config/theme.php' => config_path('theme.php'),
-        ]);
+        ], 'config');
 
         $this->publishes([
             __DIR__ . '/../../template' => self::laraPath(),
         ], 'template');
+
+        /// merge config
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/theme.php', 'theme'
+        );
 
         $this->registerCommands();
     }

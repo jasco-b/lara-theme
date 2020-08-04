@@ -93,9 +93,7 @@ class Theme implements ITheme
 
         $this->current = $this->get($theme);
 
-        if ($this->config->shouldReplaceView()) {
-            $this->addLocation($this->current);
-        }
+        $this->addLocation($this->current);
 
         $this->addNamespaces($this->current);
 
@@ -106,13 +104,18 @@ class Theme implements ITheme
         return $this;
     }
 
+    /**
+     * check theme exists or not
+     * @param $theme
+     * @return bool
+     */
     public function has($theme)
     {
         return $this->hasValue($this->list(), $theme);
     }
 
     /**
-     * @param null $theme
+     * @param null $theme name of the theme
      * @return ThemeVo|null
      */
     public function get($theme = null)
@@ -128,6 +131,9 @@ class Theme implements ITheme
         return $this->getValue($this->list(), $theme);
     }
 
+    /**
+     * @param ThemeVo $theme
+     */
     protected function addLocation(ThemeVo $theme)
     {
         if (method_exists($this->view, 'getFinder')) {
@@ -135,21 +141,35 @@ class Theme implements ITheme
         }
     }
 
+    /**
+     * @param ThemeVo $theme
+     */
     protected function addNamespaces(ThemeVo $theme)
     {
         $this->view->addNamespace($theme->getThemeNamespace(), $theme->getPath());
     }
 
+    /**
+     * Publishes theme assets
+     * @param ThemeVo $current
+     */
     private function publishAssets(ThemeVo $current)
     {
         $this->publisher->publish($current);
     }
 
+    /**
+     * alias of list function
+     */
     public function all()
     {
         return $this->list();
     }
 
+    /**
+     * returns list of available themes
+     * @return ThemeVo[]
+     */
     public function list()
     {
         if ($this->list === null) {
@@ -159,16 +179,25 @@ class Theme implements ITheme
         return $this->list;
     }
 
+    /**
+     * @return ThemeVo[]
+     */
     protected function loadThemes()
     {
         $this->list = $this->themeLoader->loadAll();
         return $this->list;
     }
 
+    /**
+     * returns info about current theme
+     * @param string $field
+     * @return string?
+     */
     public function info($field = 'name')
     {
-        if ($this->current && method_exists($this->current, $field)) {
-            return $this->current->{$field}();
+        $method = 'get' . ucfirst($field);
+        if ($this->current && method_exists($this->current, $method)) {
+            return $this->current->{$method}();
         }
 
         return null;
@@ -226,26 +255,45 @@ class Theme implements ITheme
      */
     public function make($view, $data = [], $mergeData = [])
     {
-        if ($this->current && !$this->config->shouldReplaceView()) {
+        if ($this->current) {
             return $this->makeWithThemeNamespace($view, $data, $mergeData);
         }
 
         return $this->view->make($view, $data, $mergeData);
     }
 
+    /**
+     * alias of the make function
+     * @param $view
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\View
+     */
     public function view($view, $data = [], $mergeData = [])
     {
         return $this->make($view, $data, $mergeData);
     }
 
+    /**
+     * alias of the make function
+     * @param $view
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\View
+     */
     public function include($view, $data = [], $mergeData = [])
     {
         return $this->view->make($view, $data, $mergeData);
     }
 
+    /**
+     * @param $view
+     * @param bool $nameSpace
+     * @return bool|mixed
+     */
     public function exists($view, $nameSpace = true)
     {
-        if ($nameSpace && $this->current && !$this->config->shouldReplaceView()) {
+        if ($nameSpace && $this->current) {
             return $this->existsWithThemeSpaces($view);
         }
 
@@ -260,6 +308,13 @@ class Theme implements ITheme
         return $this->parser;
     }
 
+    /**
+     * used to add current namespace
+     * @param $view
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\View
+     */
     protected function makeWithThemeNamespace($view, $data = [], $mergeData = [])
     {
         $viewList = $this->resloveViewNames($view);
@@ -267,6 +322,10 @@ class Theme implements ITheme
         return $this->view->first($viewList, $data, $mergeData);
     }
 
+    /**
+     * @param $view
+     * @return mixed
+     */
     protected function existsWithThemeSpaces($view)
     {
         $viewList = $this->resloveViewNames($view);
@@ -276,11 +335,15 @@ class Theme implements ITheme
         });
     }
 
+    /**
+     * @param $view
+     * @return array
+     */
     public function resloveViewNames($view)
     {
         [$namespace, $name] = $this->parser()->parseName($view);
 
-        $themePath = $this->current->getThemeNamespace() . '::' . $name;
+        $themePath = $this->current->getThemeNamespace() . '::' . ($namespace ? 'alias-' . $namespace : '') . $name;
 
         return [$themePath, $view];
     }
@@ -291,6 +354,24 @@ class Theme implements ITheme
     public function getViewFactory()
     {
         return $this->view;
+    }
+
+    /**
+     * @param $asset
+     * @param null $secure
+     * @return string
+     */
+    public function asset($asset, $secure = null)
+    {
+        $asset = trim($asset);
+        $theme = $this->get();
+
+        if ($theme) {
+
+            return asset($theme->getUrl() . (strpos($asset, '/') !== 0 ? '/' : '') . $asset, $secure);
+        }
+
+        return asset($asset, $secure);
     }
 
 }

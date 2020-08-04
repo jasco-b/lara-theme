@@ -23,22 +23,21 @@ if (!function_exists('theme_path')) {
 
 
 if (!function_exists('theme')) {
-    function theme()
+    function theme($name = null)
     {
-        return \JascoB\Theme\Facades\Theme::get();
+        $theme = app('Jasco-theme')->get();
+
+        if ($name) {
+            return $theme->info($name);
+        }
+
+        return $theme;
     }
 }
 
-if (!function_exists('themeAsset')) {
-    function themeAsset($asset)
+if (!function_exists('theme_asset')) {
+    function theme_asset($asset, $secure = null)
     {
-        $theme = \JascoB\Theme\Facades\Theme::get();
-
-        if ($theme) {
-
-            return asset($theme->getUrl() . '/' . $asset);
-        }
-
-        return asset($asset);
+        return app('Jasco-theme')->asset($asset, $secure);
     }
 }

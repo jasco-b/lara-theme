@@ -25,7 +25,7 @@ class TestThemeConfig implements IThemeConfig
             'active' => '',
             'theme_path' => (__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'themes'),
             'symlink' => false,
-            'public_asset_path' => (__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public'. DIRECTORY_SEPARATOR . 'assets'),
+            'public_asset_path' => (__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'assets'),
             'config' => [
                 'name' => 'config.json',
             ],
@@ -33,8 +33,7 @@ class TestThemeConfig implements IThemeConfig
                 'assets' => 'assets',
             ],
             'cache' => true,
-            'replaceView' => false,
-            'public_asset_uri' => 'assets'
+            'public_asset_uri' => 'assets',
         ];
 
         $this->config = array_merge($default, (array)$data);
@@ -73,11 +72,6 @@ class TestThemeConfig implements IThemeConfig
     public function shouldCache()
     {
         return $this->getValue($this->config, 'cache');
-    }
-
-    public function shouldReplaceView()
-    {
-        return $this->getValue($this->config, 'replaceView');
     }
 
     public function publicAssetUri()
