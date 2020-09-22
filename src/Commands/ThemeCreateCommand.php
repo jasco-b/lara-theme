@@ -11,6 +11,7 @@ namespace JascoB\Theme\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use JascoB\Theme\Contracts\IThemeConfig;
 use JascoB\Theme\Facades\Theme;
 use JascoB\Theme\Providers\ThemeServiceProvider;
@@ -19,12 +20,13 @@ use JascoB\Theme\Traits\ConfigFileModifier;
 class ThemeCreateCommand extends Command
 {
     use ConfigFileModifier;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'theme:create {name}';
+    protected $signature = 'theme:create {name} {--dir=}';
 
     /**
      * The console command description.
@@ -51,13 +53,14 @@ class ThemeCreateCommand extends Command
     public function handle(Filesystem $filesystem, IThemeConfig $config)
     {
         $name = $this->argument('name');
+        $dir = $this->option('dir') ?: $name;
 
         if (Theme::get($name)) {
             $this->error(sprintf('%s has already exist', $name));
             return;
         }
 
-        if ($filesystem->exists($templateDir = $config->themePath() . DIRECTORY_SEPARATOR . $name)) {
+        if ($filesystem->exists($templateDir = $config->themePath() . DIRECTORY_SEPARATOR . Str::slug($dir))) {
             $this->error(sprintf('%s dir already exists', $templateDir));
             return;
         }
